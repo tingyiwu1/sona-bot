@@ -16,14 +16,12 @@ async def main():
     try:
         while True:
             async with sona(USERNAME, PASSWORD) as session:
-                logged_in = True
-                while logged_in:
+                while True:
                     r = await session.get(
                         "https://bu.sona-systems.com/all_exp_participant.aspx"
                     )
                     if r.url == "https://bu.sona-systems.com/default.aspx":
-                        logged_in = False
-                        break
+                        break  # session expired, retry
                     # print(await (await session.post("https://bu.sona-systems.com/AjaxMethods.asmx/RenewSession")).text())
                     if "No studies are available at this time." in await r.text():
                         print("No studies available :(")
